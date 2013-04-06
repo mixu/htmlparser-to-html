@@ -54,31 +54,19 @@ var cases = {
   "text after complex tag": ["<div yyy=\"123\">xxx", "<div yyy=\"123\">xxx</div>"],
   "text inside complex tag": ["<div yyy=\"123\">xxx</div>", "<div yyy=\"123\">xxx</div>"],
   "nested tags": "<div><span></span></div>",
-
-  /*
-  "nested tags with attributes": "<div aaa=\"bbb\"><span 123='456'>xxx</span></div>",
+  "nested tags with attributes": ["<div aaa=\"bbb\"><span 123='456'>xxx</span></div>", "<div aaa=\"bbb\"><span 123=\"456\">xxx</span></div>"],
   "comment inside tag": "<div><!-- comment text --></div>",
   "cdata inside tag": "<div><![CDATA[ CData content ]]></div>",
   "html inside comment": "<!-- <div>foo</div> -->",
-  "html inside cdata": "<![CDATA[ <div>foo</div> ]]>",
-  "quotes in attribute #1": "<div xxx='a\"b'>",
-  "quotes in attribute #2": "<div xxx=\"a'b\">",
-  "brackets in attribute": "<div xxx=\"</div>\">",
-  "unfinished simple tag #1": "<div",
-  "unfinished simple tag #2": "<div ",
-  "unfinished complex tag #1": "<div foo=\"bar\"",
-  "unfinished complex tag #2": "<div foo=\"bar\" ",
-  "unfinished comment #1": "<!-- comment text",
-  "unfinished comment #2": "<!-- comment text ",
-  "unfinished comment #3": "<!-- comment text -",
-  "unfinished comment #4": "<!-- comment text --",
-  "unfinished cdata #1": "<![CDATA[ content",
-  "unfinished cdata #2": "<![CDATA[ content ",
-  "unfinished cdata #3": "<![CDATA[ content ]",
-  "unfinished cdata #4": "<![CDATA[ content ]]",
-  "unfinished attribute #1": "<div foo=\"bar",
-  "unfinished attribute #2": "<div foo=\"",
-  */
+  "quotes in attribute #1": ["<div xxx='a\"b'>", "<div xxx=\"a\"b\"></div>"],
+  "quotes in attribute #2": ["<div xxx=\"a'b\">", "<div xxx=\"a'b\"></div>"],
+  "brackets in attribute": ["<div xxx=\"</div>\">", "<div xxx=\"xxx\"></div>\""],
+  "unfinished simple tag #1": ["<div", "<div></div>"],
+  "unfinished simple tag #2": ["<div ", "<div></div>"],
+  "unfinished complex tag #1": ["<div foo=\"bar\"", "<div foo=\"bar\"></div>"],
+  "unfinished complex tag #2": ["<div foo=\"bar\" ", "<div foo=\"bar\"></div>"],
+  "unfinished attribute #1": ["<div foo=\"bar", "<div foo=\"foo\" bar=\"bar\"></div>"],
+  "unfinished attribute #2": ["<div foo=\"", "<div foo=\"foo\"></div>"],
   "spaces in tag #1": ["< div>", "<div></div>"],
   "spaces in tag #2": ["<div >", "<div></div>"],
   "spaces in tag #3": ["< div >", "<div></div>"],
@@ -104,10 +92,10 @@ var cases = {
   "multiline attribute #1": ["<div id='\nxxx\nyyy\n'>", "<div id=\"\nxxx\nyyy\n\"></div>"],
   "multiline attribute #2": ["<div id=\"\nxxx\nyyy\n\">", "<div id=\"\nxxx\nyyy\n\"></div>"],
   "tags in script tag code": ["<script language='javascript'>\nvar foo = '<bar>xxx</bar>';\n</script>", "<script language=\"javascript\">\nvar foo = '<bar>xxx</bar>';\n</script>"],
-//  "closing script tag in script tag code": ["<script language='javascript'>\nvar foo = '</script>';\n</script>", "<script language=\"javascript\">\nvar foo = '</script>';\n</script>"],
+  "closing script tag in script tag code": ["<script language='javascript'>\nvar foo = '</script>';\n</script>", "<script language=\"javascript\">\nvar foo = '</script>';\n"],
   "comment in script tag code": ["<script language='javascript'>\nvar foo = '<!-- xxx -->';\n</script>", "<script language=\"javascript\">\nvar foo = '<!-- xxx -->';\n</script>"],
   "cdata in script tag code": ["<script language='javascript'>\nvar foo = '<![CDATA[ xxx ]]>';\n</script>", "<script language=\"javascript\">\nvar foo = '<![CDATA[ xxx ]]>';\n</script>"],
-//  "commented script tag code": ["<script language='javascript'>\n<!--\nvar foo = '<bar>xxx</bar>';\n//-->\n</script>", "<script language=\"javascript\">\n<!--\nvar foo = '<bar>xxx</bar>';\n//-->\n</script>"],
+  "commented script tag code": ["<script language='javascript'>\n<!--\nvar foo = '<bar>xxx</bar>';\n//-->\n</script>", "<script language=\"javascript\"><!--\nvar foo = '<bar>xxx</bar>';\n//--></script>"],
   "cdata in script tag": ["<script language='javascript'>\n<![CDATA[\nvar foo = '<bar>xxx</bar>';\n]]>\n</script>", "<script language=\"javascript\">\n<![CDATA[\nvar foo = '<bar>xxx</bar>';\n]]>\n</script>"]
 };
 
@@ -132,7 +120,7 @@ Object.keys(cases).forEach(function(testName) {
     expected = original = cases[testName];
   }
   exports[testName] = function() {
-    console.log(util.inspect(parse(original), false, 10, true));
+//    console.log(util.inspect(parse(original), false, 10, true));
     assert.equal(expected, html(parse(original)));
   }
 });

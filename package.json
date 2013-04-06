@@ -1,0 +1,26 @@
+{
+  "name": "htmlparser-to-html",
+  "version": "0.0.0",
+  "description": "Converts the JSON that the htmlparser/htmlparser2 package produces back to HTML.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mixu/htmlparser-to-html.git"
+  },
+  "keywords": [
+    "html",
+    "parser",
+    "htmlparser",
+    "htmlparser2"
+  ],
+  "author": "Mikito Takada <mikito.takada@gmail.com>",
+  "license": "BSD",
+  "readmeFilename": "readme.md",
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "htmlparser": "~1.7.6"
+  }
+}

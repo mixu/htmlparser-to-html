@@ -19,6 +19,96 @@ var cases = {
   "Comment within text": "this is <!-- the comment --> the text",
   "Comment within text within script": "<script>this is <!-- the comment --> the text</script>",
   "XML Namespace": "<ns:tag>text</ns:tag>",
+
+  "plain text": "This is the text",
+  "simple tag": ["<div>", "<div></div>" ],
+  "simple comment": "<!-- content -->",
+  "simple cdata": "<![CDATA[ content ]]>",
+  "text before tag": ["xxx<div>", "xxx<div></div>"],
+  "text after tag": ["<div>xxx", "<div>xxx</div>"],
+  "text inside tag": "<div>xxx</div>",
+  "attribute with single quotes": ["<div a='1'>", "<div a=\"1\"></div>"],
+  "attribute with double quotes": ["<div a=\"1\">", "<div a=\"1\"></div>"],
+  "attribute with no quotes": ["<div a=1>", "<div a=\"1\"></div>"],
+  "attribute with no value": ["<div weird>", "<div weird=\"weird\"></div>"],
+  "attribute with no value, trailing text": ["<div weird>xxx", "<div weird=\"weird\">xxx</div>"],
+  "tag with multiple attributes": ["<div a=\"1\" b=\"2\">", "<div a=\"1\" b=\"2\"></div>"],
+  "tag with multiple attributes, trailing text": ["<div a=\"1\" b=\"2\">xxx", "<div a=\"1\" b=\"2\">xxx</div>"],
+  "tag with mixed attributes #1": ["<div a=1 b='2' c=\"3\">", "<div a=\"1\" b=\"2\" c=\"3\"></div>" ],
+  "tag with mixed attributes #2": ["<div a=1 b=\"2\" c='3'>", "<div a=\"1\" b=\"2\" c=\"3\"></div>" ],
+  "tag with mixed attributes #3": ["<div a='1' b=2 c=\"3\">", "<div a=\"1\" b=\"2\" c=\"3\"></div>" ],
+  "tag with mixed attributes #4": ["<div a='1' b=\"2\" c=3>", "<div a=\"1\" b=\"2\" c=\"3\"></div>" ],
+  "tag with mixed attributes #5": ["<div a=\"1\" b=2 c='3'>", "<div a=\"1\" b=\"2\" c=\"3\"></div>" ],
+  "tag with mixed attributes #6": ["<div a=\"1\" b='2' c=\"3\">", "<div a=\"1\" b=\"2\" c=\"3\"></div>" ],
+  "tag with mixed attributes, trailing text": ["<div a=1 b='2' c=\"3\">xxx", "<div a=\"1\" b=\"2\" c=\"3\">xxx</div>"],
+  "self closing tag": [ "<div/>", "<div></div>"],
+  "self closing tag, trailing text": ["<div/>xxx", "<div></div>xxx"],
+  "self closing tag with spaces #1": ["<div />", "<div></div>"],
+  "self closing tag with spaces #2": ["<div/ >", "<div></div>"],
+  "self closing tag with spaces #3": ["<div / >", "<div></div>"],
+  "self closing tag with spaces, trailing text": ["<div / >xxx", "<div></div>xxx"],
+  "self closing tag with attribute": ["<div a=b />", "<div a=\"b\"></div>"],
+  "self closing tag with attribute, trailing text": [ "<div a=b />xxx", "<div a=\"b\"></div>xxx"],
+  "attribute missing close quote": [ "<div a=\"1><span id=\"foo\">xxx", "<div 1=\"1\" a=\"a\"><span id=\"foo\">xxx</span></div>"],
+  "text before complex tag": ["xxx<div yyy=\"123\">", "xxx<div yyy=\"123\"></div>"],
+  "text after complex tag": ["<div yyy=\"123\">xxx", "<div yyy=\"123\">xxx</div>"],
+  "text inside complex tag": ["<div yyy=\"123\">xxx</div>", "<div yyy=\"123\">xxx</div>"],
+  "nested tags": "<div><span></span></div>",
+
+  /*
+  "nested tags with attributes": "<div aaa=\"bbb\"><span 123='456'>xxx</span></div>",
+  "comment inside tag": "<div><!-- comment text --></div>",
+  "cdata inside tag": "<div><![CDATA[ CData content ]]></div>",
+  "html inside comment": "<!-- <div>foo</div> -->",
+  "html inside cdata": "<![CDATA[ <div>foo</div> ]]>",
+  "quotes in attribute #1": "<div xxx='a\"b'>",
+  "quotes in attribute #2": "<div xxx=\"a'b\">",
+  "brackets in attribute": "<div xxx=\"</div>\">",
+  "unfinished simple tag #1": "<div",
+  "unfinished simple tag #2": "<div ",
+  "unfinished complex tag #1": "<div foo=\"bar\"",
+  "unfinished complex tag #2": "<div foo=\"bar\" ",
+  "unfinished comment #1": "<!-- comment text",
+  "unfinished comment #2": "<!-- comment text ",
+  "unfinished comment #3": "<!-- comment text -",
+  "unfinished comment #4": "<!-- comment text --",
+  "unfinished cdata #1": "<![CDATA[ content",
+  "unfinished cdata #2": "<![CDATA[ content ",
+  "unfinished cdata #3": "<![CDATA[ content ]",
+  "unfinished cdata #4": "<![CDATA[ content ]]",
+  "unfinished attribute #1": "<div foo=\"bar",
+  "unfinished attribute #2": "<div foo=\"",
+  */
+  "spaces in tag #1": ["< div>", "<div></div>"],
+  "spaces in tag #2": ["<div >", "<div></div>"],
+  "spaces in tag #3": ["< div >", "<div></div>"],
+  "spaces in closing tag #1": ["< /div>", ""],
+  "spaces in closing tag #2": ["</ div>", ""],
+  "spaces in closing tag #3": ["</div >", ""],
+  "spaces in closing tag #4": ["< / div >", ""],
+  "spaces in tag, trailing text": ["< div >xxx", "<div>xxx</div>"],
+  "spaces in attributes #1": ["<div foo =\"bar\">", "<div foo=\"bar\"></div>"],
+  "spaces in attributes #2": ["<div foo= \"bar\">", "<div foo=\"bar\"></div>"],
+  "spaces in attributes #3": ["<div foo = \"bar\">", "<div foo=\"bar\"></div>"],
+  "spaces in attributes #4": ["<div foo =bar>", "<div foo=\"bar\"></div>"],
+  "spaces in attributes #5": ["<div foo= bar>", "<div foo=\"bar\"></div>"],
+  "spaces in attributes #6": ["<div foo = bar>", "<div foo=\"bar\"></div>"],
+  "mixed case tag": ["<diV>", "<diV></diV>"],
+  "upper case tag": ["<DIV>", "<DIV></DIV>"],
+  "mixed case attribute": ["<div xXx=\"yyy\">", "<div xXx=\"yyy\"></div>"],
+  "upper case case attribute": ["<div XXX=\"yyy\">", "<div XXX=\"yyy\"></div>"],
+  "multiline simple tag": ["<\ndiv\n>", "<div></div>"],
+  "multiline complex tag": ["<\ndiv\nid='foo'\n>", "<div id=\"foo\"></div>"],
+  "multiline comment": "<!--\ncomment text\n-->",
+  "cdata comment": "<![CDATA[\nCData content\n]]>",
+  "multiline attribute #1": ["<div id='\nxxx\nyyy\n'>", "<div id=\"\nxxx\nyyy\n\"></div>"],
+  "multiline attribute #2": ["<div id=\"\nxxx\nyyy\n\">", "<div id=\"\nxxx\nyyy\n\"></div>"],
+  "tags in script tag code": ["<script language='javascript'>\nvar foo = '<bar>xxx</bar>';\n</script>", "<script language=\"javascript\">\nvar foo = '<bar>xxx</bar>';\n</script>"],
+//  "closing script tag in script tag code": ["<script language='javascript'>\nvar foo = '</script>';\n</script>", "<script language=\"javascript\">\nvar foo = '</script>';\n</script>"],
+  "comment in script tag code": ["<script language='javascript'>\nvar foo = '<!-- xxx -->';\n</script>", "<script language=\"javascript\">\nvar foo = '<!-- xxx -->';\n</script>"],
+  "cdata in script tag code": ["<script language='javascript'>\nvar foo = '<![CDATA[ xxx ]]>';\n</script>", "<script language=\"javascript\">\nvar foo = '<![CDATA[ xxx ]]>';\n</script>"],
+//  "commented script tag code": ["<script language='javascript'>\n<!--\nvar foo = '<bar>xxx</bar>';\n//-->\n</script>", "<script language=\"javascript\">\n<!--\nvar foo = '<bar>xxx</bar>';\n//-->\n</script>"],
+  "cdata in script tag": ["<script language='javascript'>\n<![CDATA[\nvar foo = '<bar>xxx</bar>';\n]]>\n</script>", "<script language=\"javascript\">\n<![CDATA[\nvar foo = '<bar>xxx</bar>';\n]]>\n</script>"]
 };
 
 function parse(html) {
@@ -42,9 +132,8 @@ Object.keys(cases).forEach(function(testName) {
     expected = original = cases[testName];
   }
   exports[testName] = function() {
-
-//    console.log(util.inspect(parse(original), false, 10, true));
-    assert.equal(html(parse(original)), original);
+    console.log(util.inspect(parse(original), false, 10, true));
+    assert.equal(expected, html(parse(original)));
   }
 });
 

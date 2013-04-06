@@ -25,23 +25,30 @@ function html(item) {
     case 'text':
       return item.data;
     case 'directive':
-      return;
+      return '<'+item.data+'>';
     case 'comment':
       return '<!--'+item.data+'-->';
     case 'style':
     case 'script':
     case 'tag':
-      return '<'+item.name+
-               (item.attribs ?
-                  Object.keys(item.attribs).reduce(function(prev, key) {
-                    return prev + ' '+key+'="'+item.attribs[key]+'"'
-                  }, '') : ''
-               )+
-              '>'+
-              (item.children ? html(item.children) : '')+
-              (emptyTags[item.name] ? '' : '</'+item.name+'>');
+      var result = '<'+item.name;
+      if(item.attribs) {
+        result += ' '+Object.keys(item.attribs).map(function(key){
+                return key + '="'+item.attribs[key]+'"';
+              }).join(' ');
+      }
+      if(item.children) {
+        result += '>'+html(item.children)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
+      } else {
+        if(emptyTags[item.name]) {
+          result += '>';
+        } else {
+          result += '></'+item.name+'>';
+        }
+      }
+      return result;
     case 'cdata':
-      return;
+      return '<!CDATA['+item.data+']]>';
   }
 
 }

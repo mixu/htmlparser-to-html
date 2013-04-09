@@ -32,7 +32,7 @@ function html(item) {
     case 'script':
     case 'tag':
       var result = '<'+item.name;
-      if(item.attribs) {
+      if(item.attribs && Object.keys(item.attribs).length > 0) {
         result += ' '+Object.keys(item.attribs).map(function(key){
                 return key + '="'+item.attribs[key]+'"';
               }).join(' ');

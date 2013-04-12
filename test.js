@@ -58,7 +58,7 @@ var cases = {
   "comment inside tag": "<div><!-- comment text --></div>",
   "cdata inside tag": "<div><![CDATA[ CData content ]]></div>",
   "html inside comment": "<!-- <div>foo</div> -->",
-  "quotes in attribute #1": ["<div xxx='a\"b'>", "<div xxx=\"a\"b\"></div>"],
+  "quotes in attribute #1": ["<div xxx='a\"b'>", "<div xxx=\"a&#34;b\"></div>"],
   "quotes in attribute #2": ["<div xxx=\"a'b\">", "<div xxx=\"a'b\"></div>"],
   "brackets in attribute": ["<div xxx=\"</div>\">", "<div xxx=\"xxx\"></div>\""],
   "unfinished simple tag #1": ["<div", "<div></div>"],
@@ -121,9 +121,14 @@ Object.keys(cases).forEach(function(testName) {
   }
   exports[testName] = function() {
 //    console.log(util.inspect(parse(original), false, 10, true));
-    assert.equal(expected, html(parse(original)));
+    assert.equal(html(parse(original)), expected);
   }
 });
+
+exports['escape double quotation marks'] = function() {
+  var result = html({ type: 'tag', name: 'p', attribs: { foo: 'a"b'} });
+  assert.equal(result, '<p foo=\"a&#34;b\"></p>');
+};
 
 // if this module is the script being run, then run the tests:
 if (module == require.main) {

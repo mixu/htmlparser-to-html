@@ -16,6 +16,19 @@ var emptyTags = {
   "?xml": 1
 };
 
+var ampRe = /&/g,
+    looseAmpRe = /&([^a-z#]|#(?:[^0-9x]|x(?:[^0-9a-f]|$)|$)|$)/gi,
+    ltRe = /</g,
+    gtRe = />/g,
+    quotRe = /\"/g,
+    eqRe = /\=/g;
+
+function escapeAttrib(s) {
+  // Escaping '=' defangs many UTF-7 and SGML short-tag attacks.
+  return s.replace(ampRe, '&amp;').replace(ltRe, '&lt;').replace(gtRe, '&gt;')
+      .replace(quotRe, '&#34;').replace(eqRe, '&#61;');
+}
+
 function html(item) {
   // apply recursively to arrays
   if(Array.isArray(item)) {
@@ -34,7 +47,7 @@ function html(item) {
       var result = '<'+item.name;
       if(item.attribs && Object.keys(item.attribs).length > 0) {
         result += ' '+Object.keys(item.attribs).map(function(key){
-                return key + '="'+item.attribs[key]+'"';
+                return key + '="'+escapeAttrib(item.attribs[key])+'"';
               }).join(' ');
       }
       if(item.children) {

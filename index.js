@@ -49,8 +49,9 @@ function html(item) {
       return result;
     case 'cdata':
       return '<!CDATA['+item.data+']]>';
+    default:
+      return item;
   }
-
 }
 
 module.exports = html;

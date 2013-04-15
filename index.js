@@ -24,6 +24,14 @@ var ampRe = /&/g,
     eqRe = /\=/g;
 
 function escapeAttrib(s) {
+  if(typeof s == 'number' || typeof s == 'boolean') return s.toString();
+  if(typeof s != 'string') {
+    if(!s.toString || typeof s.toString != 'function') {
+      return '';
+    } else {
+      s = s.toString();
+    }
+  }
   // Escaping '=' defangs many UTF-7 and SGML short-tag attacks.
   return s.replace(ampRe, '&amp;').replace(ltRe, '&lt;').replace(gtRe, '&gt;')
       .replace(quotRe, '&#34;').replace(eqRe, '&#61;');

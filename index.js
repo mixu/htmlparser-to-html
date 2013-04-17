@@ -37,10 +37,15 @@ function escapeAttrib(s) {
       .replace(quotRe, '&#34;').replace(eqRe, '&#61;');
 }
 
-function html(item) {
+function html(item, eachFn) {
+  if(eachFn) {
+    item = eachFn(item);
+  }
   // apply recursively to arrays
   if(Array.isArray(item)) {
-    return item.map(html).join('');
+    return item.map(function(subitem) {
+      return html(subitem, eachFn);
+    }).join('');
   }
   if(typeof item != 'undefined' && typeof item.type != 'undefined') {
     switch(item.type) {
@@ -60,7 +65,7 @@ function html(item) {
                 }).join(' ');
         }
         if(item.children) {
-          result += '>'+html(item.children)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
+          result += '>'+html(item.children, eachFn)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
         } else {
           if(emptyTags[item.name]) {
             result += '>';

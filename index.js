@@ -38,14 +38,14 @@ function escapeAttrib(s) {
 }
 
 function html(item, eachFn) {
-  if(eachFn) {
-    item = eachFn(item);
-  }
   // apply recursively to arrays
   if(Array.isArray(item)) {
     return item.map(function(subitem) {
       return html(subitem, eachFn);
     }).join('');
+  }
+  if(eachFn) {
+    item = eachFn(item);
   }
   if(typeof item != 'undefined' && typeof item.type != 'undefined') {
     switch(item.type) {

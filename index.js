@@ -37,15 +37,18 @@ function escapeAttrib(s) {
       .replace(quotRe, '&#34;').replace(eqRe, '&#61;');
 }
 
-function html(item, eachFn) {
+function html(item, parent, eachFn) {
   // apply recursively to arrays
   if(Array.isArray(item)) {
     return item.map(function(subitem) {
-      return html(subitem, eachFn);
+      // parent, not item: the parent of an array item is not the array,
+      // but rather the element that contained the array
+      return html(subitem, parent, eachFn);
     }).join('');
   }
+  var orig = item;
   if(eachFn) {
-    item = eachFn(item);
+    item = eachFn(item, parent);
   }
   if(typeof item != 'undefined' && typeof item.type != 'undefined') {
     switch(item.type) {
@@ -65,7 +68,12 @@ function html(item, eachFn) {
                 }).join(' ');
         }
         if(item.children) {
-          result += '>'+html(item.children, eachFn)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
+          // parent becomes the current element
+          // check if the current item (before any eachFns are run) - is a renderable
+          if(!orig.render) {
+            orig = parent;
+          }
+          result += '>'+html(item.children, orig, eachFn)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
         } else {
           if(emptyTags[item.name]) {
             result += '>';

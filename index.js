@@ -23,7 +23,14 @@ var ampRe = /&/g,
     quotRe = /\"/g,
     eqRe = /\=/g;
 
+var config = {
+    disableAttribEscape: false
+};
+
 function escapeAttrib(s) {
+  if (config.disableAttribEscape === true)
+    return s.toString();
+
   // null or undefined
   if(s == null) { return ''; }
   if(s.toString && typeof s.toString == 'function') {
@@ -35,13 +42,13 @@ function escapeAttrib(s) {
   }
 }
 
-function html(item, parent, eachFn) {
+function __html(item, parent, eachFn) {
   // apply recursively to arrays
   if(Array.isArray(item)) {
     return item.map(function(subitem) {
       // parent, not item: the parent of an array item is not the array,
       // but rather the element that contained the array
-      return html(subitem, parent, eachFn);
+      return __html(subitem, parent, eachFn);
     }).join('');
   }
   var orig = item;
@@ -71,7 +78,7 @@ function html(item, parent, eachFn) {
           if(!orig.render) {
             orig = parent;
           }
-          result += '>'+html(item.children, orig, eachFn)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
+          result += '>'+__html(item.children, orig, eachFn)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
         } else {
           if(emptyTags[item.name]) {
             result += '>';
@@ -85,6 +92,17 @@ function html(item, parent, eachFn) {
     }
   }
   return item;
+}
+
+function html(parserDom, userConfig) {
+  if(userConfig !== undefined) {
+    for (k in config) {
+      if (userConfig[k] !== undefined){
+        config[k] = userConfig[k];
+      }
+    }
+  }
+  return __html(parserDom);
 }
 
 module.exports = html;

@@ -4,6 +4,9 @@ var util = require('util'),
     html = require('./index.js'),
     htmlparser = require('htmlparser');
 
+// Configuration can be applied like this
+// html.configure({disableAttribEscape: true});
+
 // test cases are auto-generated  since we just check that
 // html(htmlparser(original)) == original is true
 var cases = {

@@ -42,13 +42,13 @@ function escapeAttrib(s) {
   }
 }
 
-function __html(item, parent, eachFn) {
+var html = function(item, parent, eachFn) {
   // apply recursively to arrays
   if(Array.isArray(item)) {
     return item.map(function(subitem) {
       // parent, not item: the parent of an array item is not the array,
       // but rather the element that contained the array
-      return __html(subitem, parent, eachFn);
+      return html(subitem, parent, eachFn);
     }).join('');
   }
   var orig = item;
@@ -78,7 +78,7 @@ function __html(item, parent, eachFn) {
           if(!orig.render) {
             orig = parent;
           }
-          result += '>'+__html(item.children, orig, eachFn)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
+          result += '>'+html(item.children, orig, eachFn)+(emptyTags[item.name] ? '' : '</'+item.name+'>');
         } else {
           if(emptyTags[item.name]) {
             result += '>';
@@ -94,7 +94,7 @@ function __html(item, parent, eachFn) {
   return item;
 }
 
-function html(parserDom, userConfig) {
+html.configure = function (userConfig) {
   if(userConfig !== undefined) {
     for (k in config) {
       if (userConfig[k] !== undefined){
@@ -102,7 +102,6 @@ function html(parserDom, userConfig) {
       }
     }
   }
-  return __html(parserDom);
 }
 
 module.exports = html;

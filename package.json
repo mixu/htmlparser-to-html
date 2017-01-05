@@ -1,6 +1,6 @@
 {
   "name": "htmlparser-to-html",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Converts the JSON that the htmlparser/htmlparser2 package produces back to HTML.",
   "main": "index.js",
   "scripts": {

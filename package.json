@@ -17,7 +17,7 @@
     "htmlparser2"
   ],
   "author": "Mikito Takada <mikito.takada@gmail.com>",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "readmeFilename": "readme.md",
   "devDependencies": {
     "mocha": "~1.9.0",

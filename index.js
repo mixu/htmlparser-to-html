@@ -23,7 +23,14 @@ var ampRe = /&/g,
     quotRe = /\"/g,
     eqRe = /\=/g;
 
+var config = {
+    disableAttribEscape: false
+};
+
 function escapeAttrib(s) {
+  if (config.disableAttribEscape === true)
+    return s.toString();
+
   // null or undefined
   if(s == null) { return ''; }
   if(s.toString && typeof s.toString == 'function') {
@@ -35,7 +42,7 @@ function escapeAttrib(s) {
   }
 }
 
-function html(item, parent, eachFn) {
+var html = function(item, parent, eachFn) {
   // apply recursively to arrays
   if(Array.isArray(item)) {
     return item.map(function(subitem) {
@@ -85,6 +92,16 @@ function html(item, parent, eachFn) {
     }
   }
   return item;
+}
+
+html.configure = function (userConfig) {
+  if(userConfig !== undefined) {
+    for (k in config) {
+      if (userConfig[k] !== undefined){
+        config[k] = userConfig[k];
+      }
+    }
+  }
 }
 
 module.exports = html;

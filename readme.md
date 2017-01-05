@@ -16,6 +16,12 @@ Optionally, you can apply a function to each element just before they are conver
 - `parent`: optional param - a parent element, only used for the `mapFn`.
 - `mapFn`: a function(item, parent) that is applied to each element just before the element is converted into html. The parent parameter is either the original value of the parent (default: null), or the parent element of this child element.
 
+### Configuration
+htmlparser-to-html can be configured with the `configure(config_object)`. The following configuration parmeters are available:
+
+- `disableAttribEscape`: Set to `true` to disable escaping the attribute values. (default is `false`)
+
+
 ## Usage
 
     var html = require('htmlparser-to-html');
@@ -40,5 +46,9 @@ Optionally, you can apply a function to each element just before they are conver
 
 Of course, you probably want to generate the array from htmlparser.
 
+### Example configuration
+    var html = require('htmlparser-to-html');
+
+    html.configure({disableAttribEscape: true);
 
 
